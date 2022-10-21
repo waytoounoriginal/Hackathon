@@ -78,21 +78,20 @@ class Dashboard extends StatelessWidget {
                 child: Padding(
                     padding: const EdgeInsets.all(27.5),
                     child: Stack(
+                      alignment: Alignment.center,
                       children: [
                         CustomPaint(
                           painter: CirclePainter(legitPercent: kPercent),
                           size: MediaQuery.of(context).size,
                         ),
-                        Center(
-                          child: Column(
-                            children: [
-                              Text(
-                                '${(1.0 - kPercent) * 100}%',
-                                style: TextSchemes.titleStyle.copyWith(
-                                    color: AppColorScheme.susRed, fontSize: 30),
-                              )
-                            ],
-                          ),
+                        Column(
+                          children: [
+                            Text(
+                              '${(1.0 - kPercent) * 100}%',
+                              style: TextSchemes.titleStyle.copyWith(
+                                  color: AppColorScheme.susRed, fontSize: 30),
+                            )
+                          ],
                         ),
                       ],
                     )),
