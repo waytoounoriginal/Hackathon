@@ -66,7 +66,7 @@ class _AccountViewerState extends State<AccountViewer>
     zoomTween = Tween<double>(begin: 0, end: 100);
 
     circleAnimation = zoomTween.animate(
-        CurvedAnimation(parent: circleController, curve: Curves.easeIn));
+        CurvedAnimation(parent: circleController, curve: Curves.decelerate));
 
     opacCtrler1 = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500));
@@ -94,6 +94,8 @@ class _AccountViewerState extends State<AccountViewer>
           _seeHistoryKey.currentContext!.findRenderObject() as RenderBox;
 
       Offset position = _box.localToGlobal(Offset.zero);
+
+      print(position.dx);
 
       center = position;
 
@@ -810,7 +812,9 @@ class _AccountViewerState extends State<AccountViewer>
                 builder: ((context, child) => ClipPath(
                     clipper: CircleTransition(
                         center: center, value: circleAnimation.value),
-                    child: const MapPage()))),
+                    child: MapPage(
+                      controller: circleController,
+                    )))),
           ],
         ));
   }
