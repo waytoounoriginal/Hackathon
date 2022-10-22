@@ -1,4 +1,6 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:seon_challenge_dreamit/pages/account_view.dart';
 import 'dart:math' as math;
 
 import '../others/color_scheme.dart';
@@ -15,9 +17,7 @@ class Dashboard extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
 
     //  DEBUG
-    final kPercent = .3;
-
-    ;
+    const kPercent = .3;
 
     Widget _userInfoButton() => Row(
           children: [
@@ -55,121 +55,124 @@ class Dashboard extends StatelessWidget {
               flex: 1,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Container(
-                  height: 110,
-                  decoration: ContainerDecorations.whiteContainerDeco
-                      .copyWith(color: AppColorScheme.greishWhite),
-                  child: Center(
-                    child: Icon(
-                      Icons.arrow_forward_ios_outlined,
-                      color: AppColorScheme.darkGreen,
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 110,
+                      decoration: ContainerDecorations.whiteContainerDeco
+                          .copyWith(color: AppColorScheme.greishWhite),
+                      child: Center(
+                        child: Icon(
+                          Icons.arrow_forward_ios_outlined,
+                          color: AppColorScheme.darkGreen,
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(
+                      height: 110,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(20),
+                          onTap: () {
+                            Navigator.of(context).push(PageRouteBuilder(
+                                transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) =>
+                                    SharedAxisTransition(
+                                      animation: animation,
+                                      secondaryAnimation: secondaryAnimation,
+                                      transitionType:
+                                          SharedAxisTransitionType.horizontal,
+                                      fillColor: AppColorScheme.normalGreen,
+                                      child: child,
+                                    ),
+                                pageBuilder:
+                                    ((context, animation, secondaryAnimation) =>
+                                        const AccountViewer())));
+                          },
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
             )
           ],
         );
 
-    return Scaffold(
-      backgroundColor: AppColorScheme.normalGreen,
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: AnimationLimiter(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: AnimationConfiguration.toStaggeredList(
-                duration: const Duration(milliseconds: 750),
-                childAnimationBuilder: (widget) => SlideAnimation(
-                      horizontalOffset: 50.0,
-                      child: FadeInAnimation(
-                        child: widget,
-                      ),
+    return AnimationLimiter(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: AnimationConfiguration.toStaggeredList(
+          duration: const Duration(milliseconds: 750),
+          delay: const Duration(milliseconds: 250),
+          childAnimationBuilder: (widget) => SlideAnimation(
+                horizontalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: widget,
+                ),
+              ),
+          children: [
+            Container(
+              height: 50,
+              width: width * .75,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: AppColorScheme.greishWhite,
+                  boxShadow: const [
+                    BoxShadow(
+                        offset: Offset(4, 4),
+                        color: Colors.black12,
+                        blurRadius: 10)
+                  ]),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  //  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Icon(
+                      Icons.insights,
+                      color: AppColorScheme.normalGreen,
                     ),
-                children: [
-                  SizedBox(
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.asset('assets/images/logos/logo.png'),
-                        const Text('X',
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600)),
-                        Image.asset('assets/images/logos/dreamIT.png')
+                        Text(
+                          'User Insights',
+                          style: TextSchemes.titleStyle,
+                        ),
+                        Container(
+                          height: 2,
+                          width: 70,
+                          decoration: BoxDecoration(
+                              color: AppColorScheme.normalGreen,
+                              borderRadius: BorderRadius.circular(30)),
+                        )
                       ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Container(
-                    height: 50,
-                    width: width * .75,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppColorScheme.greishWhite,
-                        boxShadow: [
-                          const BoxShadow(
-                              offset: Offset(4, 4),
-                              color: Colors.black12,
-                              blurRadius: 10)
-                        ]),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        //  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Icon(
-                            Icons.insights,
-                            color: AppColorScheme.normalGreen,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'User Insights',
-                                style: TextSchemes.titleStyle,
-                              ),
-                              Container(
-                                height: 2,
-                                width: 70,
-                                decoration: BoxDecoration(
-                                    color: AppColorScheme.normalGreen,
-                                    borderRadius: BorderRadius.circular(30)),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  _Dashboard(
-                    kPercent: kPercent,
-                    size: width * .5,
-                    users: 345,
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  _userInfoButton()
-                ]),
-          )),
-        ),
-      ),
-    );
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            _Dashboard(
+              kPercent: kPercent,
+              size: width * .5,
+              users: 345,
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            _userInfoButton()
+          ]),
+    ));
   }
 }
 
@@ -204,7 +207,7 @@ class __DashboardState extends State<_Dashboard> with TickerProviderStateMixin {
   @override
   void initState() {
     startAngle = rad(0 - degOffset);
-    endAngle = rad(360 * widget.kPercent);
+    endAngle = rad(360 * widget.kPercent - degOffset);
 
     susStart = endAngle;
     susEnd = rad(360 - 2 * degOffset) - susStart;
@@ -215,8 +218,8 @@ class __DashboardState extends State<_Dashboard> with TickerProviderStateMixin {
 
     numberAnim = Tween<double>(begin: 0, end: (1.0 - widget.kPercent) * 100);
 
-    chartController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 1500));
+    chartController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1500));
 
     anim1 = legitAnim.animate(
         CurvedAnimation(parent: chartController, curve: Curves.decelerate));
