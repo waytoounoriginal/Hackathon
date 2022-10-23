@@ -15,6 +15,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<String> dummyData = [];
 
+
     ValueNotifier currentPage = ValueNotifier(0);
 
     // final List<Widget> pages = [

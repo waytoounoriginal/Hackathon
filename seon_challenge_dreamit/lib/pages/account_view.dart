@@ -135,26 +135,56 @@ class _AccountViewerState extends State<AccountViewer>
   }
 
   Fingerprint toFingerprint(Map<String, dynamic> map) {
-    bool isEmulator = map["device_details"]['is_emulator'] ?? false;
-    bool isRooted = map["device_details"]['is_rooted'] ?? false;
-    String ipCountry = map["device_details"]['dns_ip_country'] ?? 'NULL';
-    String ipISP = map["device_details"]['dns_ip_isp'] ?? 'NULL';
-    String ipIP = map["device_details"]['dns_ip'] ?? 'NULL';
-    String deviceCountry = map["device_details"]['device_ip_country'] ?? 'NULL';
-    String deviceISP = map["device_details"]['device_ip_isp'] ?? 'NULL';
-    String deviceIP = map["device_details"]['device_ip_address'] ?? 'NULL';
+    int score = map['score'] ?? -9999;
+    String country = map['country'] ?? "NULL";
+    String stateprov = map['stateprov'] ?? "NULL";
+    String city = map['city'] ?? "NULL";
+    String timezone = map['timezone'] ?? "NULL";
+    double lat = map['lat'] ?? -9999;
+    double long = map['long'] ?? -9999;
+
+    String dnsip = map['dnsip'] ?? "NULL";
+
+    String dnsipcountry = map['dnsipcountry'] ?? "NULL";
+
+    String dnsipisp = map['dnsipisp'] ?? "NULL";
+
+    int regiontime = map['regiontime'] ?? 0;
+
+    String deviceip = map['deviceip'] ?? "NULL";
+
+    String deviceipcountry = map['deviceipcountry'] ?? "NULL";
+
+    String deviceipisp = map['deviceipisp'] ?? "NULL";
+
+    bool vpn = map['vpn'] ?? false;
+    bool tor = map['tor'] ?? false;
+    bool webproxy = map['webproxy'] ?? false;
+    bool publicproxy = map['publicproxy'] ?? false;
+    bool private = map['private'] ?? false;
 
     print(map['dns_ip_country']);
 
     return Fingerprint(
-        isEmulator: isEmulator,
-        isRooted: isRooted,
-        ipCountry: ipCountry,
-        ipISP: ipISP,
-        ipIP: ipIP,
-        deviceCountry: deviceCountry,
-        deviceISP: deviceISP,
-        deviceIP: deviceIP);
+        score: score,
+        country: country,
+        stateprov: stateprov,
+        city: city,
+        timezone: timezone,
+        lat: lat,
+        long: long,
+        dnsip: dnsip,
+        dnsipcountry: dnsipcountry,
+        dnsipisp: dnsipisp,
+        regiontime: regiontime,
+        deviceip: deviceip,
+        deviceipcountry: deviceipcountry,
+        deviceipisp: deviceipisp,
+        vpn: vpn,
+        tor: tor,
+        webproxy: webproxy,
+        publicproxy: publicproxy,
+        private: private);
   }
 
   //  DEBUG
@@ -166,11 +196,13 @@ class _AccountViewerState extends State<AccountViewer>
           fullName: "Mihai Tira",
           userName: "Mike4544",
           lastIP: "127.0.0.1",
+          userCountry: "RO",
           email: "dummy@dummy.com",
           phoneNo: "+40 7123456789",
           fingerprint: toFingerprint(Fingerprint.dummyInfo),
-          isLegit: i % 2 == 0 ? true : false,
-          dateCreated: DateTime.now()));
+          dateCreated: DateTime.now(),
+          id: i,
+          type: 'Fraudulent'));
     }
 
     return dummy;
@@ -249,7 +281,7 @@ class _AccountViewerState extends State<AccountViewer>
                                                               ? AppColorScheme
                                                                   .normalGreen
                                                               : AppColorScheme
-                                                                  .darkGreen,
+                                                                  .mediumGreen,
                                                     ),
                                                   ),
                                                   Positioned(
@@ -383,7 +415,7 @@ class _AccountViewerState extends State<AccountViewer>
                                                       ? AppColorScheme
                                                           .normalGreen
                                                       : AppColorScheme
-                                                          .darkGreen,
+                                                          .mediumGreen,
                                                 ),
                                               ),
                                               Positioned(
@@ -447,7 +479,7 @@ class _AccountViewerState extends State<AccountViewer>
                                                                 Icons
                                                                     .person_outline_outlined,
                                                                 color: AppColorScheme
-                                                                    .darkGreen,
+                                                                    .mediumGreen,
                                                                 size: 50,
                                                               ),
                                                               Column(
@@ -463,14 +495,16 @@ class _AccountViewerState extends State<AccountViewer>
                                                                         .titleStyle
                                                                         .copyWith(
                                                                             color:
-                                                                                AppColorScheme.darkGreen),
+                                                                                AppColorScheme.mediumGreen),
                                                                   ),
                                                                   const SizedBox(
                                                                     height: 10,
                                                                   ),
                                                                   if (_dummyList[
-                                                                          selectedIndex]
-                                                                      .isLegit)
+                                                                              selectedIndex]
+                                                                          .fingerprint
+                                                                          .score <=
+                                                                      10)
                                                                     Container(
                                                                       height:
                                                                           17.5,
@@ -609,7 +643,7 @@ class _AccountViewerState extends State<AccountViewer>
                                                                               padding: const EdgeInsets.all(3.0),
                                                                               child: Text(
                                                                                 e[0],
-                                                                                style: TextSchemes.titleStyle.copyWith(color: AppColorScheme.darkGreen, fontSize: 10),
+                                                                                style: TextSchemes.titleStyle.copyWith(color: AppColorScheme.mediumGreen, fontSize: 10),
                                                                               ),
                                                                             ))
                                                                         .toList()),
@@ -694,7 +728,7 @@ class _AccountViewerState extends State<AccountViewer>
                                                                               padding: const EdgeInsets.all(3.0),
                                                                               child: Text(
                                                                                 e[0],
-                                                                                style: TextSchemes.titleStyle.copyWith(color: AppColorScheme.darkGreen, fontSize: 10),
+                                                                                style: TextSchemes.titleStyle.copyWith(color: AppColorScheme.mediumGreen, fontSize: 10),
                                                                               ),
                                                                             ))
                                                                         .toList()),
@@ -842,7 +876,7 @@ class BigCard extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.person_outline_outlined,
-                    color: AppColorScheme.darkGreen,
+                    color: AppColorScheme.mediumGreen,
                   ),
                   const SizedBox(
                     width: 5,
@@ -850,7 +884,7 @@ class BigCard extends StatelessWidget {
                   Text(
                     person.fullName,
                     style: TextSchemes.titleStyle.copyWith(
-                        fontSize: 12.5, color: AppColorScheme.darkGreen),
+                        fontSize: 12.5, color: AppColorScheme.mediumGreen),
                   )
                 ],
               ),
@@ -863,16 +897,16 @@ class BigCard extends StatelessWidget {
                       Text(
                         "Created at: ${DateFormat("dd-MM-yyyy").format(person.dateCreated)}",
                         style: TextSchemes.titleStyle.copyWith(
-                            fontSize: 7.5, color: AppColorScheme.darkGreen),
+                            fontSize: 7.5, color: AppColorScheme.mediumGreen),
                       ),
                       Text(
                         "Last IP: ${person.lastIP}",
                         style: TextSchemes.titleStyle.copyWith(
-                            fontSize: 7.5, color: AppColorScheme.darkGreen),
+                            fontSize: 7.5, color: AppColorScheme.mediumGreen),
                       ),
                     ],
                   ),
-                  if (person.isLegit)
+                  if (person.fingerprint.score <= 10)
                     Container(
                       height: 17.5,
                       width: 40,
@@ -985,7 +1019,7 @@ class _MiniCardState extends State<MiniCard> {
               Text(
                 widget.person.fullName.replaceFirst(' ', '\n'),
                 style: TextSchemes.titleStyle
-                    .copyWith(fontSize: 10, color: AppColorScheme.darkGreen),
+                    .copyWith(fontSize: 10, color: AppColorScheme.mediumGreen),
               ),
               Align(
                 alignment: Alignment.bottomRight,
@@ -996,7 +1030,7 @@ class _MiniCardState extends State<MiniCard> {
                       color: AppColorScheme.greishWhite),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                    child: widget.person.isLegit
+                    child: widget.person.fingerprint.score <= 10
                         ? Icon(
                             Icons.check_rounded,
                             color: AppColorScheme.normalGreen,

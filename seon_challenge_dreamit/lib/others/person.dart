@@ -1,64 +1,125 @@
 import 'package:intl/intl.dart';
 
 class Person {
-  String fullName;
-  String userName;
-  String lastIP;
-  String email;
-  String phoneNo;
-  DateTime dateCreated;
-  bool isLegit;
+  String? id;
+  String? fullName;
+  String? userName;
+  String? type;
+  String? userCountry;
+  String? lastIP;
+  String? email;
+  String? phoneNo;
+  String? dateCreated;
   Fingerprint fingerprint;
 
-  Person(
-      {required this.fullName,
-      required this.userName,
-      required this.lastIP,
-      required this.email,
-      required this.phoneNo,
-      required this.dateCreated,
-      required this.fingerprint,
-      required this.isLegit});
+  Person({
+    required this.id,
+    required this.fullName,
+    required this.userName,
+    required this.type,
+    required this.userCountry,
+    required this.lastIP,
+    required this.email,
+    required this.phoneNo,
+    required this.dateCreated,
+    required this.fingerprint,
+  });
 
   Map toJson() => {
+        "ID": id,
         "Full Name": fullName,
         "Username": userName,
+        "Type": type,
+        "User Country": userCountry,
         "Last IP": lastIP,
         "Email": email,
         "Phone Number": phoneNo,
         "Date Created": dateCreated,
-        "Is Suspicious": !isLegit
+        "Fingerprint": fingerprint
       };
 
+  Person fromJSON(Map json, Map fingerprintJSON) {
+
+    Fingerprint _fprint = Fingerprint.fromJSON(fingerprintJSON);
+
+
+    return  Person(
+        id: json['id'],
+        dateCreated: json['usercreated'],
+        email: json['email'],
+        fingerprint: _fprint,
+        fullName: json['fullname'],
+        lastIP: json['iptable'],
+        phoneNo: json['phonenumber'],
+        type: int.parse(_fprint.score ?? '11') > 10 ? 'Fraudulent' : 'Normal',
+        userCountry: _fprint.country,
+        userName: json['username'],
+      );
+  }
+
   List<List<String>> toList() => [
-        ["Full Name:", fullName],
-        ["Username:", userName],
-        ["Last IP:", lastIP],
-        ["Email:", email],
-        ["Phone Number:", phoneNo],
-        ["Date Created:", DateFormat("dd-MM-yyyy").format(dateCreated)],
+        ["ID:", id.toString()],
+        ["Full Name:", fullName ?? "NULL"],
+        ["Username:", userName ?? "NULL"],
+        ["Full Name:", fullName ?? "NULL"],
+        ["Type:", type ?? "NULL"],
+        ["User Country:", userCountry ?? "NULL"],
+        ["Last IP:", lastIP ?? "NULL"],
+        ["Email:", email ?? "NULL"],
+        ["Phone Number:", phoneNo ?? "NULL"],
+        ["Date Created:", dateCreated ?? "NULL"],
       ];
 }
 
 class Fingerprint {
-  bool isEmulator;
-  bool isRooted;
-  String ipCountry;
-  String ipISP;
-  String ipIP;
-  String deviceCountry;
-  String deviceISP;
-  String deviceIP;
+  String? score;
+  String? country;
+  String? stateprov;
+  String? city;
+  String? timezone;
+  String? lat;
+  String? long;
+
+  String? dnsip;
+
+  String? dnsipcountry;
+
+  String? dnsipisp;
+
+  String? regiontime;
+
+  String? deviceip;
+
+  String? deviceipcountry;
+
+  String? deviceipisp;
+
+  String? vpn;
+  String? tor;
+  String? webproxy;
+  String? publicproxy;
+  String? private;
 
   Fingerprint({
-    required this.isEmulator,
-    required this.isRooted,
-    required this.ipCountry,
-    required this.ipISP,
-    required this.ipIP,
-    required this.deviceCountry,
-    required this.deviceISP,
-    required this.deviceIP,
+    required this.score,
+    required this.country,
+    required this.stateprov,
+    required this.city,
+    required this.timezone,
+    required this.lat,
+    required this.long,
+    required this.dnsip,
+    required this.dnsipcountry,
+    required this.dnsipisp,
+    required this.regiontime,
+    required this.deviceip,
+    required this.deviceipcountry,
+    required this.deviceipisp,
+    required this.vpn,
+    required this.tor,
+    required this.webproxy,
+    required this.publicproxy,
+    required this.private,
   });
 
   //  DEBUG
@@ -127,15 +188,46 @@ class Fingerprint {
     }
   };
 
-
   List<List<String>> toList() => [
-        ["Is rooted:", isRooted.toString()],
-        ["Is emulator:", isEmulator.toString()],
-        ["DNS Country:", ipCountry],
-        ["DNS ISP:", ipISP],
-        ["DNS IP", ipIP],
-        ["Device Country:", deviceCountry],
-        ["Device ISP:", deviceISP],
-        ["Device IP:", deviceIP],
+        ["Has VPN:", vpn.toString()],
+        ["Has WebProxy:", webproxy.toString()],
+        ["Has PublicProxy:", publicproxy.toString()],
+        ["Is Private:", private.toString()],
+        ["Is TOR:", tor.toString()],
+        ["Score:", score.toString()],
+        ["Country:", country ?? "NULL"],
+        ["State Province:", stateprov ?? "NULL"],
+        ["City:", city ?? "NULL"],
+        ["Timezone:", timezone ?? "NULL"],
+        ["Latitude:", lat.toString()],
+        ["Longitude:", long.toString()],
+        ["DNS IP:", dnsip ?? "NULL"],
+        ["DNS Country:", dnsipcountry ?? "NULL"],
+        ["DNS ISP:", dnsipisp ?? "NULL"],
+        ["Region Time:", regiontime ?? "NULL"],
+        ["Device IP:", deviceip ?? "NULL"],
+        ["Device Country:", deviceipcountry ?? "NULL"],
+        ["Device ISP:", deviceipisp ?? "NULL"],
       ];
+
+  static Fingerprint fromJSON(Map json) => Fingerprint(
+      score: json['score'] ?? "NULL",
+      country: json['country'] ?? "NULL",
+      stateprov: json['stateprov'] ?? "NULL",
+      city: json['city'] ?? "NULL",
+      timezone: json['timezone'] ?? "NULL",
+      lat: json['lat'] ?? "NULL",
+      long: json['long'] ?? "NULL",
+      dnsip: json['dnsip'] ?? "NULL",
+      dnsipcountry: json['dnsipcountry'] ?? "NULL",
+      dnsipisp: json['dnsipisp'] ?? "NULL",
+      regiontime: json['regiontime'] ?? "NULL",
+      deviceip: json['deviceip'] ?? "NULL",
+      deviceipcountry: json['deviceipcountry'] ?? "NULL",
+      deviceipisp: json['deviceipisp'] ?? "NULL",
+      vpn: json['vpn'] ?? "NULL",
+      tor: json['tor'] ?? "NULL",
+      webproxy: json['webproxy'] ?? "NULL",
+      publicproxy: json['publicproxy'] ?? "NULL",
+      private: json['private'] ?? "NULL");
 }

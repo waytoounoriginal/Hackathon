@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import './pages/main_page.dart';
+import './pages/splashScreen.dart';
 import './pages/dashboard.dart';
 import './pages/account_view.dart';
 
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         '/dashboard': (context) => const Dashboard(),
         '/account_view': (context) => const AccountViewer(),
       },
-      home: const MainPage(),
+      home: const AnimatedSplashScreen(),
     );
   }
 }

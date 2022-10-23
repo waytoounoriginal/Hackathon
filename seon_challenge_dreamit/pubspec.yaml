@@ -42,6 +42,7 @@ dependencies:
   latlong2: ^0.8.1
   flutter_map: ^3.0.0
   lottie: ^1.4.3
+  starflut: ^0.9.5
 
 dev_dependencies:
   flutter_test:

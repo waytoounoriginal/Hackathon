@@ -34,12 +34,12 @@ class BottomNBar extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.arrow_back,
-                            color: AppColorScheme.darkGreen,
+                            color: AppColorScheme.mediumGreen,
                           ),
                           Text(
                             'Back',
                             style: TextSchemes.titleStyle
-                                .copyWith(color: AppColorScheme.darkGreen),
+                                .copyWith(color: AppColorScheme.mediumGreen),
                           )
                         ],
                       )),

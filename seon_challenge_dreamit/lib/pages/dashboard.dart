@@ -64,7 +64,7 @@ class Dashboard extends StatelessWidget {
                       child: Center(
                         child: Icon(
                           Icons.arrow_forward_ios_outlined,
-                          color: AppColorScheme.darkGreen,
+                          color: AppColorScheme.mediumGreen,
                         ),
                       ),
                     ),
@@ -331,13 +331,13 @@ class __DashboardState extends State<_Dashboard> with TickerProviderStateMixin {
                               children: [
                                 Icon(
                                   Icons.person_outline_outlined,
-                                  color: AppColorScheme.darkGreen,
+                                  color: AppColorScheme.mediumGreen,
                                 ),
                                 FittedBox(
                                   child: Text(
                                     'Total Users',
                                     style: TextSchemes.titleStyle.copyWith(
-                                        color: AppColorScheme.darkGreen),
+                                        color: AppColorScheme.mediumGreen),
                                   ),
                                 )
                               ],
@@ -345,7 +345,7 @@ class __DashboardState extends State<_Dashboard> with TickerProviderStateMixin {
                             Text(
                               widget.users.toString(),
                               style: TextSchemes.titleStyle.copyWith(
-                                  color: AppColorScheme.darkGreen,
+                                  color: AppColorScheme.mediumGreen,
                                   fontSize: 30),
                             )
                           ],

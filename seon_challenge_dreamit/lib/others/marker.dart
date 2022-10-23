@@ -23,6 +23,9 @@ class NavMarker {
     required this.country
   });
 
+  
+
+
   Widget widgetBuild() {
     String format = '';
     String _color = color.toString().split('.').last;

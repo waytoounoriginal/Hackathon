@@ -150,16 +150,68 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   }
 
   void _showDetailsAboutNode(int node) {
+    Color _color;
+
+    switch (markers[node].nMarker.color) {
+      case NavScore.green:
+        _color = AppColorScheme.lighterGreen;
+        break;
+      case NavScore.yellow:
+        _color = Color.fromARGB(255, 233, 228, 184);
+        break;
+      case NavScore.red:
+        _color = AppColorScheme.bkgSusRed;
+        break;
+    }
+
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       barrierColor: Colors.black12,
       builder: (context) => Container(
         height: MediaQuery.of(context).size.height * .5,
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-            color: AppColorScheme.greishWhite),
+            color: _color),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              SizedBox(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Current Node's IP:",
+                    style: TextSchemes.titleStyle
+                        .copyWith(color: AppColorScheme.mediumGreen),
+                  ),
+                  Row(
+                    children: [
+                      SmallFlag(country: markers[node].nMarker.country),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        markers[node].nMarker.ip,
+                        style: TextSchemes.titleStyle
+                            .copyWith(color: AppColorScheme.mediumGreen),
+                      )
+                    ],
+                  ),
+                ],
+              )),
+              Divider(
+                height: 25,
+                indent: MediaQuery.of(context).size.width / 4,
+                endIndent: MediaQuery.of(context).size.width / 4,
+                color: Colors.grey.withOpacity(.5),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -255,7 +307,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                             children: [
                               Icon(
                                 Icons.person_outline_outlined,
-                                color: AppColorScheme.darkGreen,
+                                color: AppColorScheme.mediumGreen,
                               ),
                               const SizedBox(
                                 width: 5,
@@ -263,8 +315,8 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                               //  DEBUG
                               Text(
                                 'Mihai Tira',
-                                style: TextSchemes.titleStyle
-                                    .copyWith(color: AppColorScheme.darkGreen),
+                                style: TextSchemes.titleStyle.copyWith(
+                                    color: AppColorScheme.mediumGreen),
                               )
                             ],
                           ),
@@ -335,7 +387,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                                             style: TextSchemes.titleStyle
                                                 .copyWith(
                                                     color: AppColorScheme
-                                                        .darkGreen),
+                                                        .mediumGreen),
                                           ),
                                         ),
                                       ),
@@ -509,7 +561,7 @@ class NodeButton extends StatelessWidget {
                         width: 7.5,
                       ),
                       Text(marker!.ip,
-                          style: TextStyle(color: AppColorScheme.darkGreen))
+                          style: TextStyle(color: AppColorScheme.mediumGreen))
                     ]),
                   ),
                 ),
